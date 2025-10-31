@@ -11,24 +11,28 @@
     </style>
 </head>
 <body>
-    <h1>Hello, world!</h1>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <div class="container">
         <h1 class="mb-3">Pokédex</h1>
+
         <div class="row mb-3">
-            <div class="input-group">
-                <input id="searchInput" type="text" class="form-contral" placeholder="Buscar por nombre o ID (ej: pikachu 0 25)">
-                <button id="btnSearch" class="btn btn-outline-secondary">Aleatorio</button>
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input id="searchInput" type="text" class="form-contral" placeholder="Buscar por nombre o ID (ej: pikachu 0 25)">
+                    <button id="btnSearch" class="btn btn-primary">Busacr</button>
+                    <button id="btnRandom" class="btn btn-outline-secondary">Aleatorio</button>
+                </div>
+            </div>
+            <div class="col-md-6 text-md-end mt-2 mt-md-0">
+                <small class="text-muted">Datos de <a href="https://pokeapi.co" target="_blank">PokéAPI</a></small>
             </div>
         </div>
-        <div class="col-md-6 text-md-end mt-2 mt-md-0">
-            <small class="text-mutd">Datos de <a href="https://pokeapi.co" target="_blank">PokéAPI</a></small>
-        </div>
-    </div>
 
-    <div id="listControls" class="d-flex justify-content-between aling-items-center mb-2">
-        <div>
-            <button id="prevBtn" class="btn btn-outline-primary btn-sm">Siguiente</button>
+        <div id="listControls" class="d-flex justify-content-between aling-items-center mb-2">
+            <div>
+                <button id="prevBtn" class="btn btn-outline-primary btn-sm me-2">Anterior</button>
+                <button id="nextBtn" class="btn btn-outline-primary btn-sm">Siguiente</button>
+            </div>
             <div>
                 <span id="pageInfo" class="text-muted"></span>
             </div>
@@ -45,11 +49,29 @@
                         <div class="col-md-4 text-center">
                             <img id="pokeSprite" class="sprite mb-2" src="" alt="sprite">
                             <div id="typeBadges" class="mb-2"></div>
-                            <div><small id="heightWeight" class="col-md-8">
-                                <h6><h6>Habilidades</h6></h6>
-                            </small></div>
+                            <div><small id="heightWeight" class="text-muted"></small></div>                            </small></div>
+                        </div>
+                        <div class="col-md-8">
+                            <h6>Habilidades</h6>
+                            <div id="abilities"></div>
+
+                            <hr>
+
+                            <h6>Estadísticas base</h6>
+                            <div id="stats"></div>
+
+                            <hr>
+
+                            <h6>Movimientos (poderes) - primeros 12</h6>
+                            <div class="moves-list">
+                                <ul id="moves" class="list-group list group-flush"></ul>
+                            </div>
                         </div>
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="openOnPooke" type="button" class="btn btn-outline-secondary">Abrir en PokéAPI</button>
+                    <button type="button" class="btn btn-secondary" data-sb-dismiss="modal">Cerrer</button>
                 </div>
             </div>
         </div>
