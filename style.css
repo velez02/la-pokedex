@@ -1,0 +1,7 @@
+body { padding-top: 1.5rem; background: #f8f9fa;}
+.pokemon-card { cursor: pointer; transition: transform 0.12ease; }
+.pokemon-card:hover { transform: translateY(-6px); }
+.typre-badge { margin-right: .25rem; }
+.sprite { width: 96px; height: 96px; image-rendering: pixelated; }
+.stat-name { width: 100px; font-weight: 600;}
+.moves-list { max-height: 180px; overflow-y: auto; }

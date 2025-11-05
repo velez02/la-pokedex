@@ -11,7 +11,7 @@
     </style>
 </head>
 <body>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <div class="container">
         <h1 class="mb-3">Pokédex</h1>
 
@@ -37,7 +37,9 @@
                 <span id="pageInfo" class="text-muted"></span>
             </div>
         </div>
+
         <div id="cardsRow" class="row g-3"></div>
+
         <div class="modal fade" id="pokeModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
@@ -46,35 +48,42 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="col-md-4 text-center">
-                            <img id="pokeSprite" class="sprite mb-2" src="" alt="sprite">
-                            <div id="typeBadges" class="mb-2"></div>
+                        <div class="row g-3">
+                            <div class="col-md-4 text-center">
+                                <img id="pokeSprite" class="sprite mb-2" src="" alt="sprite">
+                                <div id="typeBadges" class="mb-2"></div>
                             <div><small id="heightWeight" class="text-muted"></small></div>                            </small></div>
-                        </div>
-                        <div class="col-md-8">
-                            <h6>Habilidades</h6>
-                            <div id="abilities"></div>
+                            </div>
+                            <div class="col-md-8">
+                                <h6>Habilidades</h6>
+                                <div id="abilities"></div>
 
-                            <hr>
+                                <hr>
 
-                            <h6>Estadísticas base</h6>
-                            <div id="stats"></div>
+                                <h6>Estadísticas base</h6>
+                                <div id="stats"></div>
 
-                            <hr>
+                                <hr>
 
-                            <h6>Movimientos (poderes) - primeros 12</h6>
-                            <div class="moves-list">
-                                <ul id="moves" class="list-group list group-flush"></ul>
+                                <h6>Movimientos (poderes) - primeros 12</h6>
+                                <div class="moves-list">
+                                    <ul id="moves" class="list-group list-group-flush"></ul>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button id="openOnPooke" type="button" class="btn btn-outline-secondary">Abrir en PokéAPI</button>
-                    <button type="button" class="btn btn-secondary" data-sb-dismiss="modal">Cerrer</button>
+                    <div class="modal-footer">
+                        <button id="openOnPoke" type="button" class="btn btn-outline-secondary">Abrir en PokéAPI</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrer</button>
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
 </body>
 </html>
