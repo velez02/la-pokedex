@@ -1,89 +1,249 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <style>
-        body { padding-top: 1.5rem; background: #f8f9fa;}
-        .pokemon-card {cursor: pointer;}
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pokédex — Bootstrap + JavaScript</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body { padding-top: 1.5rem; background: #f8f9fa; }
+    .pokemon-card { cursor: pointer; transition: transform .12s ease; }
+    .pokemon-card:hover { transform: translateY(-6px); }
+    .type-badge { margin-right: .25rem; }
+    .sprite { width: 96px; height: 96px; image-rendering: pixelated; }
+    .stat-name { width: 100px; font-weight: 600; }
+    .moves-list { max-height: 180px; overflow:auto; }
+  </style>
 </head>
 <body>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <div class="container">
-        <h1 class="mb-3">Pokédex</h1>
+  <div class="container">
+    <h1 class="mb-3">Pokédex</h1>
 
-        <div class="row mb-3">
-            <div class="col-md-6">
-                <div class="input-group">
-                    <input id="searchInput" type="text" class="form-contral" placeholder="Buscar por nombre o ID (ej: pikachu 0 25)">
-                    <button id="btnSearch" class="btn btn-primary">Busacr</button>
-                    <button id="btnRandom" class="btn btn-outline-secondary">Aleatorio</button>
-                </div>
-            </div>
-            <div class="col-md-6 text-md-end mt-2 mt-md-0">
-                <small class="text-muted">Datos de <a href="https://pokeapi.co" target="_blank">PokéAPI</a></small>
-            </div>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="input-group">
+          <input id="searchInput" type="text" class="form-control" placeholder="Buscar por nombre o ID (ej: pikachu o 25)">
+          <button id="btnSearch" class="btn btn-primary">Buscar</button>
+          <button id="btnRandom" class="btn btn-outline-secondary">Aleatorio</button>
         </div>
-
-        <div id="listControls" class="d-flex justify-content-between aling-items-center mb-2">
-            <div>
-                <button id="prevBtn" class="btn btn-outline-primary btn-sm me-2">Anterior</button>
-                <button id="nextBtn" class="btn btn-outline-primary btn-sm">Siguiente</button>
-            </div>
-            <div>
-                <span id="pageInfo" class="text-muted"></span>
-            </div>
-        </div>
-
-        <div id="cardsRow" class="row g-3"></div>
-
-        <div class="modal fade" id="pokeModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 id="pokeModalTitle" class="modal-title">Pokémon</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row g-3">
-                            <div class="col-md-4 text-center">
-                                <img id="pokeSprite" class="sprite mb-2" src="" alt="sprite">
-                                <div id="typeBadges" class="mb-2"></div>
-                            <div><small id="heightWeight" class="text-muted"></small></div>                            </small></div>
-                            </div>
-                            <div class="col-md-8">
-                                <h6>Habilidades</h6>
-                                <div id="abilities"></div>
-
-                                <hr>
-
-                                <h6>Estadísticas base</h6>
-                                <div id="stats"></div>
-
-                                <hr>
-
-                                <h6>Movimientos (poderes) - primeros 12</h6>
-                                <div class="moves-list">
-                                    <ul id="moves" class="list-group list-group-flush"></ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button id="openOnPoke" type="button" class="btn btn-outline-secondary">Abrir en PokéAPI</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrer</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+      </div>
+      <div class="col-md-6 text-md-end mt-2 mt-md-0">
+        <small class="text-muted">Datos de <a href="https://pokeapi.co" target="_blank">PokéAPI</a></small>
+      </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <div id="listControls" class="d-flex justify-content-between align-items-center mb-2">
+      <div>
+        <button id="prevBtn" class="btn btn-outline-primary btn-sm me-2">Anterior</button>
+        <button id="nextBtn" class="btn btn-outline-primary btn-sm">Siguiente</button>
+      </div>
+      <div>
+        <span id="pageInfo" class="text-muted"></span>
+      </div>
+    </div>
 
-</body>
+    <div id="cardsRow" class="row g-3"></div>
+
+    <div class="modal fade" id="pokeModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 id="pokeModalTitle" class="modal-title">Pokémon</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-4 text-center">
+                <img id="pokeSprite" class="sprite mb-2" src="" alt="sprite">
+                <div id="typeBadges" class="mb-2"></div>
+                <div><small id="heightWeight" class="text-muted"></small></div>
+              </div>
+              <div class="col-md-8">
+                <h6>Habilidades</h6>
+                <div id="abilities"></div>
+
+                <hr>
+
+                <h6>Estadísticas base</h6>
+                <div id="stats"></div>
+
+                <hr>
+
+                <h6>Movimientos (poderes) — primeros 12</h6>
+                <div class="moves-list">
+                  <ul id="moves" class="list-group list-group-flush"></ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button id="openOnPoke" type="button" class="btn btn-outline-secondary">Abrir en PokéAPI</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+  const API_BASE = 'https://pokeapi.co/api/v2';
+  const PAGE_LIMIT = 20;
+
+  let offset = 0;
+  let totalCount = 0;
+
+  const cardsRow = document.getElementById('cardsRow');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const pageInfo = document.getElementById('pageInfo');
+  const btnSearch = document.getElementById('btnSearch');
+  const searchInput = document.getElementById('searchInput');
+  const btnRandom = document.getElementById('btnRandom');
+
+  const pokeModal = new bootstrap.Modal(document.getElementById('pokeModal'));
+  const pokeModalTitle = document.getElementById('pokeModalTitle');
+  const pokeSprite = document.getElementById('pokeSprite');
+  const typeBadges = document.getElementById('typeBadges');
+  const abilitiesEl = document.getElementById('abilities');
+  const statsEl = document.getElementById('stats');
+  const movesEl = document.getElementById('moves');
+  const heightWeight = document.getElementById('heightWeight');
+  const openOnPoke = document.getElementById('openOnPoke');
+
+  function capitalizar(s){ return s ? s[0].toUpperCase()+s.slice(1):''; }
+
+  async function cargarLista(off = 0) {
+    cardsRow.innerHTML = '<div class="text-center w-100 py-5 text-muted">Cargando...</div>';
+    try {
+      const res = await fetch(`${API_BASE}/pokemon?limit=${PAGE_LIMIT}&offset=${off}`);
+      const data = await res.json();
+      totalCount = data.count;
+      renderLista(data.results);
+      pageInfo.textContent = `Mostrando ${off+1}–${Math.min(off+PAGE_LIMIT, totalCount)} de ${totalCount}`;
+      prevBtn.disabled = off === 0;
+      nextBtn.disabled = off + PAGE_LIMIT >= totalCount;
+    } catch (err) {
+      console.error(err);
+      cardsRow.innerHTML = '<div class="text-center w-100 py-5 text-danger">Error al cargar la lista.</div>';
+    }
+  }
+
+  async function renderLista(results) {
+    cardsRow.innerHTML = '';
+    const detailPromises = results.map(r => fetch(r.url).then(res => res.json()).catch(()=>null));
+    const details = await Promise.all(detailPromises);
+
+    details.forEach(detail => {
+      if(!detail) return;
+      const col = document.createElement('div');
+      col.className = 'col-sm-6 col-md-4 col-lg-3';
+
+      const typesHtml = detail.types.map(t => `<span class="badge bg-secondary type-badge">${capitalizar(t.type.name)}</span>`).join(' ');
+
+      col.innerHTML = `
+        <div class="card pokemon-card h-100" data-name="${detail.name}">
+          <div class="card-body d-flex align-items-center">
+            <img src="${detail.sprites.front_default || ''}" alt="${detail.name}" class="me-3 sprite">
+            <div>
+              <h5 class="card-title mb-1">${capitalizar(detail.name)} <small class="text-muted">#${detail.id}</small></h5>
+              <div>${typesHtml}</div>
+            </div>
+          </div>
+        </div>
+      `;
+      col.querySelector('.pokemon-card').addEventListener('click', () => abrirPokemon(detail.name));
+      cardsRow.appendChild(col);
+    });
+  }
+
+  async function abrirPokemon(nombreOId) {
+    try {
+      const res = await fetch(`${API_BASE}/pokemon/${encodeURIComponent(nombreOId.toString().toLowerCase())}`);
+      if (!res.ok) {
+        alert('Pokémon no encontrado.');
+        return;
+      }
+      const p = await res.json();
+      mostrarPokemon(p);
+    } catch (err) {
+      console.error(err);
+      alert('Error al cargar Pokémon.');
+    }
+  }
+
+  function mostrarPokemon(p) {
+    pokeModalTitle.textContent = `${capitalizar(p.name)}  —  #${p.id}`;
+    pokeSprite.src = p.sprites.other?.['official-artwork']?.front_default || p.sprites.front_default || '';
+    typeBadges.innerHTML = p.types.map(t => `<span class="badge bg-info text-dark type-badge">${capitalizar(t.type.name)}</span>`).join(' ');
+    abilitiesEl.innerHTML = p.abilities.map(a => `<div><strong>${capitalizar(a.ability.name)}</strong>${a.is_hidden ? ' <em>(oculta)</em>' : ''}</div>`).join('');
+    statsEl.innerHTML = '';
+    p.stats.forEach(s => {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'd-flex align-items-center mb-2';
+      wrapper.innerHTML = `
+        <div class="stat-name">${capitalizar(s.stat.name)}</div>
+        <div class="progress w-100" style="height:12px">
+          <div class="progress-bar" role="progressbar" style="width:${Math.min(100, s.base_stat)}%;" aria-valuenow="${s.base_stat}" aria-valuemin="0" aria-valuemax="255">${s.base_stat}</div>
+        </div>
+      `;
+      statsEl.appendChild(wrapper);
+    });
+    movesEl.innerHTML = '';
+    const movesToShow = p.moves.slice(0, 12);
+    movesToShow.forEach(m => {
+      const li = document.createElement('li');
+      li.className = 'list-group-item';
+      li.textContent = capitalizar(m.move.name);
+      movesEl.appendChild(li);
+    });
+    const hMeters = (p.height/10).toFixed(1);
+    const wKg = (p.weight/10).toFixed(1);
+    heightWeight.textContent = `Altura: ${hMeters} m • Peso: ${wKg} kg`;
+
+    openOnPoke.onclick = () => {
+      window.open(`https://pokeapi.co/api/v2/pokemon/${p.id}`, '_blank');
+    };
+
+    pokeModal.show();
+  }
+
+  prevBtn.addEventListener('click', () => {
+    offset = Math.max(0, offset - PAGE_LIMIT);
+    cargarLista(offset);
+  });
+  nextBtn.addEventListener('click', () => {
+    offset = offset + PAGE_LIMIT;
+    cargarLista(offset);
+  });
+
+  btnSearch.addEventListener('click', () => {
+    const q = searchInput.value.trim();
+    if (!q) return;
+    abrirPokemon(q);
+  });
+
+  searchInput.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter') btnSearch.click();
+  });
+
+  btnRandom.addEventListener('click', async () => {
+    if (!totalCount) {
+      try {
+        const r = await fetch(`${API_BASE}/pokemon?limit=1`);
+        const d = await r.json();
+        totalCount = d.count || 898;
+      } catch { totalCount = 898; }
+    }
+    const id = Math.floor(Math.random() * totalCount) + 1;
+    abrirPokemon(id);
+  });
+
+  cargarLista(0);
+  </script>
 </body>
 </html>
